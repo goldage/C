@@ -1,0 +1,152 @@
+Script started on Sat 03 Aug 2019 10:32:28 AM CST
+[1m[7m%[27m[1m[0m                                                                                                         ]2;laurence@laurence-N550JV: ~/c/linker&loader/ex2_GOT]1;..oader/ex2_GOT[0m[27m[24m[J
+[1m[34m#[00m [36mlaurence [37m@ [32mlaurence-N550JV [37min [1m[33m~/c/linker&loader/ex2_GOT[00m [37mon[00m git:[36mdev [31mx[00m [37m[10:32:28] 
+[1m[31m$ [00m[K[?1h=[?2004hggdb ad .out[?1l>[?2004l
+]2;gdb a.out]1;gdbGNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from a.out...done.
+(gdb) disas main
+Dump of assembler code for function main:
+   0x00000000004005b1 <+0>:	push   %rbp
+   0x00000000004005b2 <+1>:	mov    %rsp,%rbp
+   0x00000000004005b5 <+4>:	sub    $0x30,%rsp
+   0x00000000004005b9 <+8>:	mov    %edi,-0x24(%rbp)
+   0x00000000004005bc <+11>:	mov    %rsi,-0x30(%rbp)
+   0x00000000004005c0 <+15>:	mov    %fs:0x28,%rax
+   0x00000000004005c9 <+24>:	mov    %rax,-0x8(%rbp)
+   0x00000000004005cd <+28>:	xor    %eax,%eax
+   0x00000000004005cf <+30>:	movabs $0x6f77206f6c6c6548,%rax
+   0x00000000004005d9 <+40>:	mov    %rax,-0x20(%rbp)
+   0x00000000004005dd <+44>:	movl   $0x21646c72,-0x18(%rbp)
+   0x00000000004005e4 <+51>:	movb   $0x0,-0x14(%rbp)
+   0x00000000004005e8 <+55>:	lea    -0x20(%rbp),%rax
+   0x00000000004005ec <+59>:	mov    %rax,%rdi
+   0x00000000004005ef <+62>:	callq  0x400596 <showmsg>
+   0x00000000004005f4 <+67>:	mov    $0x0,%eax
+   0x00000000004005f9 <+72>:	mov    -0x8(%rbp),%rdx
+   0x00000000004005fd <+76>:	xor    %fs:0x28,%rdx
+   0x0000000000400606 <+85>:	je     0x40060d <main+92>
+   0x0000000000400608 <+87>:	callq  0x400470 <__stack_chk_fail@plt>
+   0x000000000040060d <+92>:	leaveq 
+   0x000000000040060e <+93>:	retq   
+End of assembler dump.
+(gdb) b *0x00000000004005ef
+Breakpoint 1 at 0x4005ef: file helloworld.c, line 11.
+(gdb) r
+Starting program: /home/laurence/c/linker&loader/ex2_GOT/a.out 
+
+Breakpoint 1, 0x00000000004005ef in main (argc=1, argv=0x7fffffffddd8) at helloworld.c:11
+11		showmsg(szMsg);
+(gdb) disam[Ks main
+Dump of assembler code for function main:
+   0x00000000004005b1 <+0>:	push   %rbp
+   0x00000000004005b2 <+1>:	mov    %rsp,%rbp
+   0x00000000004005b5 <+4>:	sub    $0x30,%rsp
+   0x00000000004005b9 <+8>:	mov    %edi,-0x24(%rbp)
+   0x00000000004005bc <+11>:	mov    %rsi,-0x30(%rbp)
+   0x00000000004005c0 <+15>:	mov    %fs:0x28,%rax
+   0x00000000004005c9 <+24>:	mov    %rax,-0x8(%rbp)
+   0x00000000004005cd <+28>:	xor    %eax,%eax
+   0x00000000004005cf <+30>:	movabs $0x6f77206f6c6c6548,%rax
+   0x00000000004005d9 <+40>:	mov    %rax,-0x20(%rbp)
+   0x00000000004005dd <+44>:	movl   $0x21646c72,-0x18(%rbp)
+   0x00000000004005e4 <+51>:	movb   $0x0,-0x14(%rbp)
+   0x00000000004005e8 <+55>:	lea    -0x20(%rbp),%rax
+   0x00000000004005ec <+59>:	mov    %rax,%rdi
+=> 0x00000000004005ef <+62>:	callq  0x400596 <showmsg>
+   0x00000000004005f4 <+67>:	mov    $0x0,%eax
+   0x00000000004005f9 <+72>:	mov    -0x8(%rbp),%rdx
+   0x00000000004005fd <+76>:	xor    %fs:0x28,%rdx
+   0x0000000000400606 <+85>:	je     0x40060d <main+92>
+   0x0000000000400608 <+87>:	callq  0x400470 <__stack_chk_fail@plt>
+   0x000000000040060d <+92>:	leaveq 
+   0x000000000040060e <+93>:	retq   
+End of assembler dump.
+(gdb) diss[Kas 0x400596
+Dump of assembler code for function showmsg:
+   0x0000000000400596 <+0>:	push   %rbp
+   0x0000000000400597 <+1>:	mov    %rsp,%rbp
+   0x000000000040059a <+4>:	sub    $0x10,%rsp
+   0x000000000040059e <+8>:	mov    %rdi,-0x8(%rbp)
+   0x00000000004005a2 <+12>:	mov    -0x8(%rbp),%rax
+   0x00000000004005a6 <+16>:	mov    %rax,%rdi
+   0x00000000004005a9 <+19>:	callq  0x400460 <puts@plt>
+   0x00000000004005ae <+24>:	nop
+   0x00000000004005af <+25>:	leaveq 
+   0x00000000004005b0 <+26>:	retq   
+End of assembler dump.
+(gdb) disas 0x400460
+Dump of assembler code for function puts@plt:
+   0x0000000000400460 <+0>:	jmpq   *0x200bb2(%rip)        # 0x601018
+   0x0000000000400466 <+6>:	pushq  $0x0
+   0x000000000040046b <+11>:	jmpq   0x400450
+End of assembler dump.
+(gdb) x 0x601018
+0x601018:	0x00400466
+(gdb) x /30i 0x400450
+   0x400450:	pushq  0x200bb2(%rip)        # 0x601008
+   0x400456:	jmpq   *0x200bb4(%rip)        # 0x601010
+   0x40045c:	nopl   0x0(%rax)
+   0x400460 <puts@plt>:	jmpq   *0x200bb2(%rip)        # 0x601018
+   0x400466 <puts@plt+6>:	pushq  $0x0
+   0x40046b <puts@plt+11>:	jmpq   0x400450
+   0x400470 <__stack_chk_fail@plt>:	jmpq   *0x200baa(%rip)        # 0x601020
+   0x400476 <__stack_chk_fail@plt+6>:	pushq  $0x1
+   0x40047b <__stack_chk_fail@plt+11>:	jmpq   0x400450
+   0x400480 <__libc_start_main@plt>:	jmpq   *0x200ba2(%rip)        # 0x601028
+   0x400486 <__libc_start_main@plt+6>:	pushq  $0x2
+   0x40048b <__libc_start_main@plt+11>:	jmpq   0x400450
+   0x400490:	jmpq   *0x200b62(%rip)        # 0x600ff8
+   0x400496:	xchg   %ax,%ax
+   0x400498:	add    %al,(%rax)
+   0x40049a:	add    %al,(%rax)
+   0x40049c:	add    %al,(%rax)
+   0x40049e:	add    %al,(%rax)
+   0x4004a0 <_start>:	xor    %ebp,%ebp
+   0x4004a2 <_start+2>:	mov    %rdx,%r9
+   0x4004a5 <_start+5>:	pop    %rsi
+   0x4004a6 <_start+6>:	mov    %rsp,%rdx
+   0x4004a9 <_start+9>:	and    $0xfffffffffffffff0,%rsp
+   0x4004ad <_start+13>:	push   %rax
+   0x4004ae <_start+14>:	push   %rsp
+   0x4004af <_start+15>:	mov    $0x400680,%r8
+   0x4004b6 <_start+22>:	mov    $0x400610,%rcx
+   0x4004bd <_start+29>:	mov    $0x4005b1,%rdi
+   0x4004c4 <_start+36>:	callq  0x400480 <__libc_start_main@plt>
+   0x4004c9 <_start+41>:	hlt    
+(gdb) b[Kx /1xw 0x400456
+0x400456:	0x0bb425ff
+(gdb) b *0x400456
+Breakpoint 2 at 0x400456
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x0000000000400456 in ?? ()
+(gdb) ni
+_dl_runtime_resolve_avx () at ../sysdeps/x86_64/dl-trampoline.h:64
+64	../sysdeps/x86_64/dl-trampoline.h: No such file or directory.
+(gdb) i r rip
+rip            0x7ffff7dee870	0x7ffff7dee870 <_dl_runtime_resolve_avx>
+(gdb) q
+A debugging session is active.
+
+	Inferior 1 [process 13207] will be killed.
+
+Quit anyway? (y or n) y
+[1m[7m%[27m[1m[0m                                                                                                         ]2;laurence@laurence-N550JV: ~/c/linker&loader/ex2_GOT]1;..oader/ex2_GOT[0m[27m[24m[J
+[1m[34m#[00m [36mlaurence [37m@ [32mlaurence-N550JV [37min [1m[33m~/c/linker&loader/ex2_GOT[00m [37mon[00m git:[36mdev [31mx[00m [37m[10:39:05] 
+[1m[31m$ [00m[K[?1h=[?2004heexit[?1l>[?2004l
+]2;exit]1;exit
+Script done on Sat 03 Aug 2019 10:39:17 AM CST
